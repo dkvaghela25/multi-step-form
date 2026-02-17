@@ -6,10 +6,7 @@ import { useEffect } from "react";
 
 const BasicInfo = () => {
 
-  const { control, setValue, watch, formState: { errors } } = useFormContext();
-
-  console.log(useFormContext());
-  console.log(errors);
+  const { control, setValue, watch, formState: { errors }, trigger } = useFormContext();
 
   const dob = watch("dob");
 
@@ -18,8 +15,9 @@ const BasicInfo = () => {
       const now = new Date();
       let age = now.getFullYear() - dob.getFullYear();
       setValue("age", age > 0 ? age : 0);
+      trigger('dob');
     }
-  }, [dob, setValue]);
+  }, [dob, setValue, trigger]);
 
 
   return (
@@ -27,11 +25,11 @@ const BasicInfo = () => {
       <Controller
         name="fullName"
         control={control}
-        render={({ field }) => <TextField
+        render={({ field, fieldState: { error } }) => <TextField
           {...field}
           fullWidth
-          error={errors.fullName}
-          helperText={errors?.fullName?.message}
+          error={!!error}
+          helperText={error?.message}
           label="Full Name"
           variant="outlined"
         />}
@@ -40,11 +38,11 @@ const BasicInfo = () => {
       <Controller
         name="userName"
         control={control}
-        render={({ field }) => <TextField
+        render={({ field, fieldState: { error } }) => <TextField
           {...field}
           fullWidth
-          error={errors.userName}
-          helperText={errors?.userName?.message}
+          error={!!error}
+          helperText={error?.message}
           label="User Name"
           variant="outlined"
         />}
@@ -53,11 +51,11 @@ const BasicInfo = () => {
       <Controller
         name="emailId"
         control={control}
-        render={({ field }) => <TextField
+        render={({ field, fieldState: { error } }) => <TextField
           {...field}
           fullWidth
-          error={errors.emailId}
-          helperText={errors?.emailId?.message}
+          error={!!error}
+          helperText={error?.message}
           type="email"
           label="Email ID"
           variant="outlined"
@@ -67,11 +65,11 @@ const BasicInfo = () => {
       <Controller
         name="phoneNo"
         control={control}
-        render={({ field }) => <TextField
+        render={({ field, fieldState: { error } }) => <TextField
           {...field}
           fullWidth
-          error={errors.phoneNo}
-          helperText={errors?.phoneNo?.message}
+          error={!!error}
+          helperText={error?.message}
           type="tel"
           label="Phone Number"
           variant="outlined"
@@ -89,11 +87,16 @@ const BasicInfo = () => {
           name="dob"
           control={control}
           render={({ field, fieldState: {error} }) => <DatePicker
-            sx={{ width: '48%' }}
             {...field}
+            sx={{ width: '48%' }}
+            onChange={(date) => {
+              field.onChange(date);
+              trigger('dob');
+            }}
+            onBlur={() => trigger('dob')}
             slotProps={{
               textField: {
-                error: error,
+                error: !!error,
                 helperText: error?.message,
               },
             }}

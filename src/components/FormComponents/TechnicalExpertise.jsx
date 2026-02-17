@@ -7,8 +7,7 @@ import skillsOptions from '../../api/skills.json'
 
 const TechnicalExpertise = () => {
 
-  const { control, errors } = useFormContext();
-  console.log(errors);
+  const { control, trigger } = useFormContext();
 
   return (
     <>
@@ -17,15 +16,22 @@ const TechnicalExpertise = () => {
         name="skills"
         control={control}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <Autocomplete
+          <Autocomplete 
             multiple
+            filterSelectedOptions
             options={skillsOptions}
-            value={value || []}
-            onChange={(event, newValue) => onChange(newValue)}
+            // value={Array.isArray(value) ? value : []}
+            onChange={(event, newValue) => {
+              onChange(newValue);
+              trigger('skills');
+            }}
+            onBlur={() => trigger('skills')}
+            noOptionsText="No skills available"
             renderInput={(params) => (
               <TextField
                 {...params}
                 label="Skills"
+                placeholder="Select Skills"
                 error={!!error}
                 helperText={error?.message}
               />
@@ -41,13 +47,13 @@ const TechnicalExpertise = () => {
           name="experienceLevel"
           control={control}
           render={({ field, fieldState: { error } }) => (
-            <FormControl error={error}>
+            <FormControl error={!!error}>
               <RadioGroup {...field} row>
                 <FormControlLabel value="beginner" control={<Radio />} label="Beginner" />
                 <FormControlLabel value="intermediate" control={<Radio />} label="Intermediate" />
                 <FormControlLabel value="advanced" control={<Radio />} label="Advanced" />
               </RadioGroup>
-              {error && error.message}
+              {error && <Typography sx={{color: 'error.main', fontSize: '0.75rem', mt: 0.5}}>{error.message}</Typography>}
             </FormControl>
           )}
         />
@@ -59,10 +65,11 @@ const TechnicalExpertise = () => {
         render={({ field, fieldState: { error } }) => <TextField
           {...field}
           fullWidth
-          error={error}
+          error={!!error}
           helperText={error?.message}
           label="Years of Experience"
           variant="outlined"
+          type="text"
         />}
       />
 
@@ -72,9 +79,9 @@ const TechnicalExpertise = () => {
         render={({ field, fieldState: { error } }) => <TextField
           {...field}
           fullWidth
-          error={error}
+          error={!!error}
           helperText={error?.message}
-          label="Github Url"
+          label="Github URL"
           variant="outlined"
         />}
       />
@@ -82,9 +89,11 @@ const TechnicalExpertise = () => {
       <Controller
         name={`portfolio`}
         control={control}
-        render={({ field }) => <TextField
+        render={({ field, fieldState: { error } }) => <TextField
           {...field}
           fullWidth
+          error={!!error}
+          helperText={error?.message}
           label="Portfolio URL"
           variant="outlined"
         />}

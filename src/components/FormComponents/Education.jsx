@@ -35,7 +35,7 @@ const EducationFields = ({ qualification, control }) => {
         render={({ field, fieldState : {error} }) => <TextField
           {...field}
           fullWidth
-          error={error}
+          error={!!error}
           helperText={error?.message}
           label="Institute Name"
           variant="outlined"
@@ -52,9 +52,15 @@ const EducationFields = ({ qualification, control }) => {
         <Controller
           name={`qualifications.${qualification}.startDate`}
           control={control}
-          render={({ field }) => <DatePicker
+          render={({ field, fieldState: {error} }) => <DatePicker
             {...field}
             sx={{ width: '48%' }}
+            slotProps={{
+              textField: {
+                error: !!error,
+                helperText: error?.message,
+              },
+            }}
             label="Start Date"
           />}
         />
@@ -62,9 +68,15 @@ const EducationFields = ({ qualification, control }) => {
         <Controller
           name={`qualifications.${qualification}.endDate`}
           control={control}
-          render={({ field }) => <DatePicker
+          render={({ field, fieldState: {error} }) => <DatePicker
             {...field}
             sx={{ width: '48%' }}
+            slotProps={{
+              textField: {
+                error: !!error,
+                helperText: error?.message,
+              },
+            }}
             label="End Date"
           />}
         />
