@@ -1,13 +1,29 @@
-import { useFormContext } from "react-hook-form";
+import { Checkbox, FormControlLabel } from "@mui/material";
+import { Controller, useFormContext } from "react-hook-form";
 
 const Review = () => {
-  
-    const context = useFormContext();
-    console.log(context);
-  
+
+  const { control, getValues } = useFormContext();
+
+  console.log(getValues());
+
   return (
     <>
-       Review
+      <Controller
+        name="twoFactorAuthorization"
+        control={control}
+        render={({ field }) => (
+          <FormControlLabel
+            control={
+              <Checkbox
+                onChange={(e) => field.onChange(e.target.checked)}
+                checked={field.value}
+              />
+            }
+            label="* I Agree to terms and conditions"
+          />
+        )}
+      />
     </>
   );
 };

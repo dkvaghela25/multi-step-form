@@ -1,27 +1,28 @@
 import { Box, TextField } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 import { DatePicker } from '@mui/x-date-pickers';
-import { useState } from "react";
+import InputFileUpload from "../ui/InputFileUpload";
+import { useEffect } from "react";
 
 const BasicInfo = () => {
 
-  const { control, watch } = useFormContext();
+  const { control, setValue, watch } = useFormContext();
 
-  const dob = watch("dob")
-  const now = new Date();
-  const age = dob ? now.getFullYear() - dob.getFullYear() : "";
+  const dob = watch("dob");
+
+  useEffect(() => {
+    if (dob) {
+      const now = new Date();
+      let age = now.getFullYear() - dob.getFullYear();
+      setValue("age", age > 0 ? age : 0);
+    }
+  }, [dob, setValue]);
+
 
   return (
-    <Box
-      sx={{
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '20px'
-      }}
-    >
+    <>
       <Controller
-        name="firstName"
+        name="fullName"
         control={control}
         render={({ field }) => <TextField
           {...field}
@@ -88,17 +89,18 @@ const BasicInfo = () => {
           control={control}
           render={({ field }) => <TextField
             {...field}
+            disabled
             sx={{ width: '48%' }}
             label="Age"
             variant="outlined"
-            value={age}
           />}
         />
 
+
       </Box>
 
-
-    </Box>
+      <InputFileUpload label="Profile Picture Upload" />
+    </>
   );
 };
 

@@ -1,26 +1,25 @@
 import { useState } from 'react';
 import CustomStepper from './CustomStepper';
 import Buttons from './Buttons';
-import { Paper } from '@mui/material';
+import { Box, Paper } from '@mui/material';
 import { FormProvider, useForm } from "react-hook-form";
 import BasicInfo from './FormComponents/BasicInfo';
 import Education from './FormComponents/Education';
 import Review from './FormComponents/Review';
 import Security from './FormComponents/Security';
-import Skills from './FormComponents/Skills';
-import { WidthFull } from '@mui/icons-material';
+import TechnicalExpertise from './FormComponents/TechnicalExpertise';
 
 const MultiStepForm = () => {
 
     const steps = [
         "Basic Info",
         "Education",
-        "Skills",
+        "Technical Expertise",
         "Security",
-        "Review & Submit"
+        "Review & Submit",
     ]
 
-    const [step, setStep] = useState(1)
+    const [step, setStep] = useState(2)
 
     const methods = useForm({
         defaultValues: {
@@ -28,19 +27,22 @@ const MultiStepForm = () => {
             userName: "",
             password: "",
             confirmPassword: "",
+            twoFactorAuthorization: false,
             age: "",
             emailId: "",
             phoneNo: "",
             dob: null,
             qualifications: {
-                "SSC" : { qualification: "SSC", instituteName: "", passingYear: null, percentage: "", specialization: ""},
-                "HSC" : { qualification: "HSC", instituteName: "", passingYear: null, percentage: "", specialization: ""},
-                "Bachelor's Degree" : { qualification: "Bachelor's Degree", instituteName: "", passingYear: null, percentage: "", specialization: ""},
-                "Master's Degree" : { qualification: "Master's Degree", instituteName: "", passingYear: null, percentage: "", specialization: ""},
+                "SSC": { qualification: "SSC", instituteName: "", startDate: null, endDate: null, percentage: "", specialization: "" },
+                "HSC": { qualification: "HSC", instituteName: "", startDate: null, endDate: null, percentage: "", specialization: "" },
+                "Bachelors Degree": { qualification: "Bachelor's Degree", instituteName: "", startDate: null, endDate: null, percentage: "", specialization: "" },
+                "Masters Degree": { qualification: "Master's Degree", instituteName: "", startDate: null, endDate: null, percentage: "", specialization: "" },
             },
             skills: [],
-            accountType: "",
-            githubUrl: ""
+            experienceLevel: "",
+            experience: "",
+            portfolio: "",
+            githubUrl: "",
         },
     })
 
@@ -48,7 +50,7 @@ const MultiStepForm = () => {
         switch (step) {
             case 0: return <BasicInfo />
             case 1: return <Education />
-            case 2: return <Skills />
+            case 2: return <TechnicalExpertise />
             case 3: return <Security />
             case 4: return <Review />
             default: return <BasicInfo />
@@ -67,10 +69,19 @@ const MultiStepForm = () => {
                 padding: '50px'
             }}
         >
-            <CustomStepper steps={steps} step={step} />
+            <CustomStepper steps={steps} step={step} setStep={setStep} />
             <FormProvider {...methods}>
-                <form action="" style={{ width: '100%' }} autoComplete="off">
-                    {getFormFields()}
+                <form action="" style={{ width: '50vw' }} autoComplete="off">
+                    <Box
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '20px'
+                        }}
+                    >
+                        {getFormFields()}
+                    </Box>
                 </form>
             </FormProvider>
             <Buttons step={step} setStep={setStep} />

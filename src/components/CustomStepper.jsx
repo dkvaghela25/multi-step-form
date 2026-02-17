@@ -12,6 +12,7 @@ import SecurityIcon from '@mui/icons-material/Security';
 import SchoolIcon from '@mui/icons-material/School';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import PreviewIcon from '@mui/icons-material/Preview';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 
@@ -111,7 +112,7 @@ ColorStepIcon.propTypes = {
 };
 
 
-export default function CustomStepper({ steps, step }) {
+export default function CustomStepper({ steps, step, setStep }) {
   return (
     <Stepper
       sx={{
@@ -120,8 +121,8 @@ export default function CustomStepper({ steps, step }) {
       alternativeLabel activeStep={step} connector={<ColorConnector />}
     >
       {steps.map((label) => (
-        <Step key={label}>
-          <StepLabel StepIconComponent={ColorStepIcon}>{label}</StepLabel>
+        <Step  key={label} >
+          <StepLabel sx={{cursor: "pointer"}} onClick={() => setStep(steps.indexOf(label))} StepIconComponent={ColorStepIcon}>{label}</StepLabel>
         </Step>
       ))}
     </Stepper>

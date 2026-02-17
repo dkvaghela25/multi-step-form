@@ -1,5 +1,5 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Box, FormControl, IconButton, Input, InputAdornment, InputLabel, OutlinedInput, TextField } from "@mui/material";
+import { Box, Checkbox, FormControl, FormControlLabel, IconButton, Input, InputAdornment, InputLabel, OutlinedInput, TextField } from "@mui/material";
 import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -8,28 +8,37 @@ const Security = () => {
   const { control } = useFormContext();
 
   return (
-    <Box
-      sx={{
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '20px'
-      }}
-    >
-      
+    <>
+
       <Controller
         name="password"
         control={control}
         render={({ field }) => <PasswordField label='Password' field={field} />}
       />
-      
+
       <Controller
         name="confirmPassword"
         control={control}
         render={({ field }) => <PasswordField label='Confirm Password' field={field} />}
       />
 
-    </Box>
+      <Controller
+        name="twoFactorAuthorization"
+        control={control}
+        render={({ field }) => (
+          <FormControlLabel
+            control={
+              <Checkbox
+                onChange={(e) => field.onChange(e.target.checked)}
+                checked={field.value}
+              />
+            }
+            label="Enable 2FA"
+          />
+        )}
+      />
+
+    </>
   );
 };
 
