@@ -8,6 +8,8 @@ import Education from './FormComponents/Education';
 import Review from './FormComponents/Review';
 import Security from './FormComponents/Security';
 import TechnicalExpertise from './FormComponents/TechnicalExpertise';
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup"
 
 const MultiStepForm = () => {
 
@@ -19,9 +21,60 @@ const MultiStepForm = () => {
         "Review & Submit",
     ]
 
-    const [step, setStep] = useState(2)
+    const [step, setStep] = useState(0)
+
+    const phoneRegExp = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+
+    const schema = yup
+        .object({
+            fullName: yup.string().required("Full Name is required field"),
+            userName: yup.string().required("User Name is required field"),
+            emailId: yup.string().required("Email Id is required field").email("Invalid Email Id"),
+            phoneNo: yup.string().matches(phoneRegExp, 'Invalid phone no').required('Phone number is required'),
+            dob: yup.date().nonNullable().required("Date Of Birth is required and cannot be null"),
+            qualifications: yup.object({
+                "SSC": yup.object({
+                    instituteName: yup.string().required("Institute Name is required field"),
+                    startDate: yup.date().nonNullable().required("Start Date is required and cannot be null"),
+                    endDate: yup.date().nonNullable().required("End Date is required and cannot be null"),
+                    percentage: yup.number("Percentage should be number").required("Percentage is required field")
+                }),
+                "HSC": yup.object({
+                    instituteName: yup.string().required("Institute Name is required field"),
+                    startDate: yup.date().nonNullable().required("Start Date is required and cannot be null"),
+                    endDate: yup.date().nonNullable().required("End Date is required and cannot be null"),
+                    percentage: yup.number("Percentage should be number").required("Percentage is required field")
+                }),
+                "Bachelors Degree": yup.object({
+                    instituteName: yup.string().required("Institute Name is required field"),
+                    startDate: yup.date().nonNullable().required("Start Date is required and cannot be null"),
+                    endDate: yup.date().nonNullable().required("End Date is required and cannot be null"),
+                    percentage: yup.number("Percentage should be number").required("Percentage is required field")
+                })
+            }),
+            skills: yup.array().of(yup.string()).min(3, "At least 3 skills are required").required("This field is required"),
+            experienceLevel: yup.string().required("Experience Level is required field"),
+            experience: yup.string().required("Experience is required field"),
+            githubUrl: yup.string().required("Github Url is required field"),
+            password: yup
+                .string()
+                .required('Password is required')
+                .min(8, 'Password must be at least 8 characters long')
+                .matches(/[0-9]/, 'Password requires a number')
+                .matches(/[a-z]/, 'Password requires a lowercase letter')
+                .matches(/[A-Z]/, 'Password requires an uppercase letter')
+                .matches(/[^a-zA-Z0-9]/, 'Password requires a special character'), 
+
+            confirmPassword: yup
+                .string()
+                .required('Confirm password is required')
+                .oneOf([yup.ref('password'), null], 'Passwords must match'),
+
+        })
 
     const methods = useForm({
+        resolver: yupResolver(schema),
+        mode: "onTouched",
         defaultValues: {
             fullName: "",
             userName: "",
@@ -33,10 +86,10 @@ const MultiStepForm = () => {
             phoneNo: "",
             dob: null,
             qualifications: {
-                "SSC": { qualification: "SSC", instituteName: "", startDate: null, endDate: null, percentage: "", specialization: "" },
-                "HSC": { qualification: "HSC", instituteName: "", startDate: null, endDate: null, percentage: "", specialization: "" },
-                "Bachelors Degree": { qualification: "Bachelor's Degree", instituteName: "", startDate: null, endDate: null, percentage: "", specialization: "" },
-                "Masters Degree": { qualification: "Master's Degree", instituteName: "", startDate: null, endDate: null, percentage: "", specialization: "" },
+                "SSC": { qualification: "SSC", instituteName: "", startDate: null, endDate: null, percentage: 0, specialization: "" },
+                "HSC": { qualification: "HSC", instituteName: "", startDate: null, endDate: null, percentage: 0, specialization: "" },
+                "Bachelors Degree": { qualification: "Bachelor's Degree", instituteName: "", startDate: null, endDate: null, percentage: 0, specialization: "" },
+                "Masters Degree": { qualification: "Master's Degree", instituteName: "", startDate: null, endDate: null, percentage: 0, specialization: "" },
             },
             skills: [],
             experienceLevel: "",

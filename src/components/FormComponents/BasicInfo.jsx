@@ -6,7 +6,10 @@ import { useEffect } from "react";
 
 const BasicInfo = () => {
 
-  const { control, setValue, watch } = useFormContext();
+  const { control, setValue, watch, formState: { errors } } = useFormContext();
+
+  console.log(useFormContext());
+  console.log(errors);
 
   const dob = watch("dob");
 
@@ -27,6 +30,8 @@ const BasicInfo = () => {
         render={({ field }) => <TextField
           {...field}
           fullWidth
+          error={errors.fullName}
+          helperText={errors?.fullName?.message}
           label="Full Name"
           variant="outlined"
         />}
@@ -38,6 +43,8 @@ const BasicInfo = () => {
         render={({ field }) => <TextField
           {...field}
           fullWidth
+          error={errors.userName}
+          helperText={errors?.userName?.message}
           label="User Name"
           variant="outlined"
         />}
@@ -49,6 +56,8 @@ const BasicInfo = () => {
         render={({ field }) => <TextField
           {...field}
           fullWidth
+          error={errors.emailId}
+          helperText={errors?.emailId?.message}
           type="email"
           label="Email ID"
           variant="outlined"
@@ -61,6 +70,8 @@ const BasicInfo = () => {
         render={({ field }) => <TextField
           {...field}
           fullWidth
+          error={errors.phoneNo}
+          helperText={errors?.phoneNo?.message}
           type="tel"
           label="Phone Number"
           variant="outlined"
@@ -77,9 +88,15 @@ const BasicInfo = () => {
         <Controller
           name="dob"
           control={control}
-          render={({ field }) => <DatePicker
+          render={({ field, fieldState: {error} }) => <DatePicker
             sx={{ width: '48%' }}
             {...field}
+            slotProps={{
+              textField: {
+                error: error,
+                helperText: error?.message,
+              },
+            }}
             label="Date Of Birth"
           />}
         />

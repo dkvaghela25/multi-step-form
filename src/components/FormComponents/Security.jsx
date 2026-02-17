@@ -1,5 +1,5 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Box, Checkbox, FormControl, FormControlLabel, IconButton, Input, InputAdornment, InputLabel, OutlinedInput, TextField } from "@mui/material";
+import { Box, Checkbox, FormControl, FormControlLabel, FormHelperText, IconButton, Input, InputAdornment, InputLabel, OutlinedInput, TextField } from "@mui/material";
 import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -13,13 +13,13 @@ const Security = () => {
       <Controller
         name="password"
         control={control}
-        render={({ field }) => <PasswordField label='Password' field={field} />}
+        render={({ field, fieldState: { error } }) => <PasswordField label='Password' error={error} field={field} />}
       />
 
       <Controller
         name="confirmPassword"
         control={control}
-        render={({ field }) => <PasswordField label='Confirm Password' field={field} />}
+        render={({ field, fieldState: { error } }) => <PasswordField label='Confirm Password' field={field} error={error} />}
       />
 
       <Controller
@@ -44,7 +44,7 @@ const Security = () => {
 
 export default Security;
 
-const PasswordField = ({ field, label }) => {
+const PasswordField = ({ field, label, error }) => {
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -55,6 +55,7 @@ const PasswordField = ({ field, label }) => {
         <InputLabel>{label}</InputLabel>
         <OutlinedInput
           {...field}
+          error={error}
           type={showPassword ? 'text' : 'password'}
           endAdornment={
             <InputAdornment position="end">
@@ -70,6 +71,7 @@ const PasswordField = ({ field, label }) => {
           }
           label={label}
         />
+        {error && <FormHelperText>{error.message}</FormHelperText>}
       </FormControl>
     </>
   )

@@ -3,51 +3,31 @@ import { Autocomplete, TextField, Box, Chip, FormControl, FormControlLabel, Form
 import { Controller, useFormContext } from "react-hook-form";
 import LabeledContainer from '../LabeledContainer';
 import InputFileUpload from '../ui/InputFileUpload';
-import skills from '../../api/skills.json'
+import skillsOptions from '../../api/skills.json'
 
 const TechnicalExpertise = () => {
 
-  const { control } = useFormContext();
+  const { control, errors } = useFormContext();
+  console.log(errors);
 
   return (
     <>
 
-      {/* <Controller
-        name={`skills`}
-        control={control}
-        render={({ field }) => <Autocomplete
-          multiple
-          options={skills}
-          getOptionLabel={(option) => option}
-          filterSelectedOptions
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Skills"
-              placeholder="Select Skill"
-            />
-          )}
-        />}
-      /> */}
-
       <Controller
         name="skills"
         control={control}
-        render={({ field: { onChange, value } }) => (
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
           <Autocomplete
             multiple
-            options={skills}
+            options={skillsOptions}
             value={value || []}
-            getOptionLabel={(option) => option}
-            filterSelectedOptions
-            onChange={(event, newValue) => {
-              onChange(newValue); 
-            }}
+            onChange={(event, newValue) => onChange(newValue)}
             renderInput={(params) => (
               <TextField
                 {...params}
                 label="Skills"
-                placeholder="Select Skill"
+                error={!!error}
+                helperText={error?.message}
               />
             )}
           />
@@ -55,17 +35,19 @@ const TechnicalExpertise = () => {
       />
 
 
+
       <LabeledContainer label="Experience Level">
         <Controller
           name="experienceLevel"
           control={control}
-          render={({ field }) => (
-            <FormControl>
+          render={({ field, fieldState: { error } }) => (
+            <FormControl error={error}>
               <RadioGroup {...field} row>
                 <FormControlLabel value="beginner" control={<Radio />} label="Beginner" />
                 <FormControlLabel value="intermediate" control={<Radio />} label="Intermediate" />
                 <FormControlLabel value="advanced" control={<Radio />} label="Advanced" />
               </RadioGroup>
+              {error && error.message}
             </FormControl>
           )}
         />
@@ -74,9 +56,11 @@ const TechnicalExpertise = () => {
       <Controller
         name={`experience`}
         control={control}
-        render={({ field }) => <TextField
+        render={({ field, fieldState: { error } }) => <TextField
           {...field}
           fullWidth
+          error={error}
+          helperText={error?.message}
           label="Years of Experience"
           variant="outlined"
         />}
@@ -85,9 +69,11 @@ const TechnicalExpertise = () => {
       <Controller
         name={`githubUrl`}
         control={control}
-        render={({ field }) => <TextField
+        render={({ field, fieldState: { error } }) => <TextField
           {...field}
           fullWidth
+          error={error}
+          helperText={error?.message}
           label="Github Url"
           variant="outlined"
         />}

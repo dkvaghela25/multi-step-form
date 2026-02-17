@@ -6,7 +6,7 @@ import LabeledContainer from "../LabeledContainer";
 
 const Education = () => {
 
-  const { control } = useFormContext();
+  const { control, errors } = useFormContext();
   const qualifications = [
       "SSC",
       "HSC",
@@ -17,7 +17,7 @@ const Education = () => {
   return (
     <>
       {qualifications.map((qualification, index) => {
-        return <EducationFields key={index} qualification={qualification} control={control} />
+        return <EducationFields key={index} qualification={qualification} control={control} errors={errors} />
       })}
     </>
   );
@@ -26,17 +26,17 @@ const Education = () => {
 export default Education;
 
 const EducationFields = ({ qualification, control }) => {
-  console.log(qualification);
-  console.log(`qualifications.${qualification}.instituteName`);
   return (
     <LabeledContainer label={qualification} sx={{mt: 5}}>
 
       <Controller
         name={`qualifications.${qualification}.instituteName`}
         control={control}
-        render={({ field }) => <TextField
+        render={({ field, fieldState : {error} }) => <TextField
           {...field}
           fullWidth
+          error={error}
+          helperText={error?.message}
           label="Institute Name"
           variant="outlined"
         />}
@@ -73,9 +73,11 @@ const EducationFields = ({ qualification, control }) => {
       <Controller
         name={`qualifications.${qualification}.specialization`}
         control={control}
-        render={({ field }) => <TextField
+        render={({ field, fieldState : {error} }) => <TextField
           {...field}
           fullWidth
+          error={error}
+          helperText={error?.message}
           label="Specialization"
           variant="outlined"
         />}
@@ -84,12 +86,15 @@ const EducationFields = ({ qualification, control }) => {
       <Controller
         name={`qualifications.${qualification}.percentage`}
         control={control}
-        render={({ field }) => <TextField
+        render={({ field, fieldState : {error} }) => <TextField
           {...field}
           fullWidth
+          error={error}
+          helperText={error?.message}
           label="Percentage"
-          variant="outlined"
-          helperText="* If result is in CGPA than convert that into percentage according to your institute"
+          variant="outlined"  
+          type="number"
+          // helperText={ error?.message ? er :"* If result is in CGPA than convert that into percentage according to your institute"}
         />}
       />
     </LabeledContainer>
