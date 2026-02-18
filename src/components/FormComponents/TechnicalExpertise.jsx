@@ -29,6 +29,7 @@ const TechnicalExpertise = () => {
             noOptionsText="No skills available"
             renderInput={(params) => (
               <TextField
+              required
                 {...params}
                 label="Skills"
                 placeholder="Select Skills"
@@ -40,14 +41,12 @@ const TechnicalExpertise = () => {
         )}
       />
 
-
-
-      <LabeledContainer label="Experience Level">
+      <LabeledContainer label="Experience Level *">
         <Controller
           name="technicalExpertise.experienceLevel"
           control={control}
           render={({ field, fieldState: { error } }) => (
-            <FormControl error={!!error}>
+            <FormControl required error={!!error}>
               <RadioGroup {...field} row>
                 <FormControlLabel value="beginner" control={<Radio />} label="Beginner" />
                 <FormControlLabel value="intermediate" control={<Radio />} label="Intermediate" />
@@ -65,6 +64,7 @@ const TechnicalExpertise = () => {
         render={({ field, fieldState: { error } }) => <TextField
           {...field}
           fullWidth
+          required
           error={!!error}
           helperText={error?.message}
           label="Years of Experience"
@@ -79,6 +79,7 @@ const TechnicalExpertise = () => {
         render={({ field, fieldState: { error } }) => <TextField
           {...field}
           fullWidth
+          required
           error={!!error}
           helperText={error?.message}
           label="Github URL"
@@ -99,7 +100,7 @@ const TechnicalExpertise = () => {
         />}
       />
 
-      <InputFileUpload label="Resume Upload" />
+      <InputFileUpload label="Resume Upload" formField="technicalExpertise.resume" accept="application/pdf" />
 
     </>
   );

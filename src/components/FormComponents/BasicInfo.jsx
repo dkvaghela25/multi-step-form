@@ -1,4 +1,4 @@
-import { Box, TextField, useTheme, Typography } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 import { DatePicker } from '@mui/x-date-pickers';
 import InputFileUpload from "../ui/InputFileUpload";
@@ -9,7 +9,6 @@ const BasicInfo = () => {
   const { control, setValue, watch, trigger } = useFormContext();
 
   const dob = watch("basicInfo.dob");
-  const profilePicture = watch('basicInfo.profilePicture');
 
   useEffect(() => {
     if (dob) {
@@ -19,8 +18,6 @@ const BasicInfo = () => {
       trigger('dob');
     }
   }, [dob, setValue, trigger]);
-
-  console.log(useTheme());
 
   return (
     <>
@@ -107,9 +104,10 @@ const BasicInfo = () => {
               textField: {
                 error: !!error,
                 helperText: error?.message,
+                required: true,
               },
             }}
-            label="Date Of Birth *"
+            label="Date Of Birth"
           />}
         />
 
@@ -125,25 +123,9 @@ const BasicInfo = () => {
           />}
         />
 
-
       </Box>
 
-      <Box sx={{
-        border: '1px solid #999999',
-        borderRadius: '8px',
-        display: "flex",
-        justifyContent: 'space-between',
-        p: '10px',
-        alignItems: 'center'
-      }}>
-
-        {profilePicture ?
-          <Typography variant="body2" color="initial">{profilePicture}</Typography> :
-          <Typography variant="body1" color="#999999">Select Profile Image</Typography>
-        }
-
-        <InputFileUpload label="Profile Picture Upload" formField="basicInfo.profilePicture" />
-      </Box>
+      <InputFileUpload label="Profile Picture Upload" formField="basicInfo.profilePicture" accept="image/jpg, image/jpeg, image/png" />
 
     </>
   );

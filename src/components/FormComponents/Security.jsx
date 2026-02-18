@@ -13,13 +13,13 @@ const Security = () => {
       <Controller
         name="security.password"
         control={control}
-        render={({ field, fieldState: { error } }) => <PasswordField label='Password' error={error} field={field} />}
+        render={({ field, fieldState: { error } }) => <PasswordField label='Password *' error={error} field={field} />}
       />
 
       <Controller
         name="security.confirmPassword"
         control={control}
-        render={({ field, fieldState: { error } }) => <PasswordField label='Confirm Password' field={field} error={error} />}
+        render={({ field, fieldState: { error } }) => <PasswordField label='Confirm Password *' field={field} error={error} />}
       />
 
       <Controller
@@ -52,10 +52,10 @@ const PasswordField = ({ field, label, error }) => {
   return (
     <>
       <FormControl fullWidth variant="outlined">
-        <InputLabel>{label}</InputLabel>
+        <InputLabel sx={error ? { color: 'error.main' } : {}}>{label}</InputLabel>
         <OutlinedInput
+        sx={error ? { color: 'error.main' } : {}}
           {...field}
-          error={error}
           type={showPassword ? 'text' : 'password'}
           endAdornment={
             <InputAdornment position="end">
@@ -70,8 +70,10 @@ const PasswordField = ({ field, label, error }) => {
             </InputAdornment>
           }
           label={label}
+          error={!!error}
+          helperText={error?.message}
         />
-        {error && <FormHelperText>{error.message}</FormHelperText>}
+        {error && <FormHelperText sx={{ color: 'error.main' }}>{error.message}</FormHelperText>}
       </FormControl>
     </>
   )

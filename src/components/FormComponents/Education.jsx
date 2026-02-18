@@ -3,22 +3,78 @@ import { Controller, useFormContext } from "react-hook-form";
 import AddIcon from '@mui/icons-material/Add';
 import { DatePicker } from "@mui/x-date-pickers";
 import LabeledContainer from "../LabeledContainer";
+import { useState } from "react";
 
 const Education = () => {
 
   const { control, errors, watch, trigger } = useFormContext();
-  const qualifications = [
-    "SSC",
-    "HSC",
-    "Bachelors Degree",
-    "Masters Degree"
-  ];
+  const [selectValue, setSelectValue] = useState("");
+  const [qualifications, setQualifications] = useState([]);
+
+  console.log(useFormContext());
+
+  const handleChange = (e) => {
+    setSelectValue(e.target.value)
+  }
+
+  const handleClick = () => {
+
+    if (!selectValue) return;
+    if (qualifications.includes(selectValue)) return;
+
+    const educationOrder = [
+      "SSC",
+      "HSC",
+      "Bachelor's Degree",
+      "Master's Degree"
+    ];
+
+    const currentIndex = educationOrder.indexOf(selectValue);
+
+    if (currentIndex === 0) {
+      setQualifications(prev => [...prev, selectValue]);
+    } else {
+      const previousRequired = educationOrder[currentIndex - 1];
+      if (qualifications.includes(previousRequired)) {
+        setQualifications(prev => [...prev, selectValue]);
+      }
+    }
+
+  };
 
   return (
     <>
       {qualifications.map((qualification, index) => {
         return <EducationFields key={index} qualification={qualification} control={control} errors={errors} watch={watch} trigger={trigger} />
       })}
+
+      <Box
+        sx={{
+          display: "flex",
+          width: '100%',
+          justifyContent: "space-between"
+        }}
+      >
+        <FormControl sx={{
+          width: '75%',
+        }} >
+          <InputLabel>Qualification</InputLabel>
+          <Select
+            value={selectValue}
+            onChange={handleChange}
+            label="Qualification"
+          >
+            <MenuItem value="SSC">SSC</MenuItem>
+            <MenuItem value="HSC">HSC</MenuItem>
+            <MenuItem value="Bachelor's Degree">Bachelor's Degree</MenuItem>
+            <MenuItem value="Master's Degree">Master's Degree</MenuItem>
+          </Select>
+        </FormControl>
+
+        <Button sx={{ width: 'fit-content' }} variant="contained" startIcon={<AddIcon />} onClick={handleClick}>
+          Add Education
+        </Button>
+      </Box>
     </>
   );
 };
@@ -123,7 +179,6 @@ const EducationFields = ({ qualification, control, watch, trigger }) => {
           label="Percentage"
           variant="outlined"
           type="number"
-        // helperText={ error?.message ? er :"* If result is in CGPA than convert that into percentage according to your institute"}
         />}
       />
     </LabeledContainer>

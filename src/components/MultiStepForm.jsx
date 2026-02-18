@@ -11,6 +11,7 @@ import TechnicalExpertise from './FormComponents/TechnicalExpertise';
 import { yupResolver } from "@hookform/resolvers/yup"
 import { schema } from '../utils/validationSchema';
 import ThankYouPage from './FormComponents/ThankYouPage';
+import { DevTool } from '@hookform/devtools';
 
 const MultiStepForm = () => {
 
@@ -98,6 +99,7 @@ const MultiStepForm = () => {
                     >
                         {getFormFields()}
                     </Box>
+                    <DevTool control={methods.control} />
                 </form>
             <Buttons steps={steps} step={step} setStep={setStep} trigger={methods.trigger} handleSubmit={methods.handleSubmit}/>
             </FormProvider>
