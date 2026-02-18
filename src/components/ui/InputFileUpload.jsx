@@ -1,6 +1,7 @@
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { useFormContext } from 'react-hook-form';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -14,7 +15,8 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-export default function InputFileUpload({ label }) {
+export default function InputFileUpload({ label, formField }) {
+  const { setValue } = useFormContext();
   return (
     <Button
       sx={{ width: "fit-content" }}
@@ -27,7 +29,10 @@ export default function InputFileUpload({ label }) {
       {label}
       <VisuallyHiddenInput
         type="file"
-        onChange={(event) => console.log(event.target.files)}
+        onChange={(event) => {
+          setValue(formField, event.target.files[0].name)
+          console.log(event.target.files[0].name)
+        }}
         multiple
       />
     </Button>

@@ -1,4 +1,4 @@
-import { Box, TextField } from "@mui/material";
+import { Box, TextField, useTheme, Typography } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 import { DatePicker } from '@mui/x-date-pickers';
 import InputFileUpload from "../ui/InputFileUpload";
@@ -9,6 +9,7 @@ const BasicInfo = () => {
   const { control, setValue, watch, trigger } = useFormContext();
 
   const dob = watch("basicInfo.dob");
+  const profilePicture = watch('basicInfo.profilePicture');
 
   useEffect(() => {
     if (dob) {
@@ -19,6 +20,7 @@ const BasicInfo = () => {
     }
   }, [dob, setValue, trigger]);
 
+  console.log(useTheme());
 
   return (
     <>
@@ -91,10 +93,15 @@ const BasicInfo = () => {
           name="basicInfo.dob"
           control={control}
           render={({ field, fieldState: { error } }) => <DatePicker
+            {...field}
+            onChange={(date) => {
+              field.onChange(date);
+              trigger('basicInfo.dob');
+            }}
+            onBlur={() => trigger('basicInfo.dob')}
             format="dd-MM-yyyy"
             disableFuture
             minDate={new Date(1980, 0, 1)}
-            {...field}
             sx={{ width: '48%' }}
             slotProps={{
               textField: {
@@ -121,7 +128,23 @@ const BasicInfo = () => {
 
       </Box>
 
-      <InputFileUpload label="Profile Picture Upload" />
+      <Box sx={{
+        border: '1px solid #999999',
+        borderRadius: '8px',
+        display: "flex",
+        justifyContent: 'space-between',
+        p: '10px',
+        alignItems: 'center'
+      }}>
+
+        {profilePicture ?
+          <Typography variant="body2" color="initial">{profilePicture}</Typography> :
+          <Typography variant="body1" color="#999999">Select Profile Image</Typography>
+        }
+
+        <InputFileUpload label="Profile Picture Upload" formField="basicInfo.profilePicture" />
+      </Box>
+
     </>
   );
 };

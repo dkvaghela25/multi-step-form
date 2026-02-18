@@ -35,6 +35,7 @@ const MultiStepForm = () => {
                 phoneNo: "",
                 dob: null,
                 age: "",
+                profilePicture: ""
             },
             education: {
                 "SSC": { qualification: "SSC", instituteName: "", startDate: null, endDate: null, percentage: 0, specialization: "" },

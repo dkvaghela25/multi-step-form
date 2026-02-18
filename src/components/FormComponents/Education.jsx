@@ -6,7 +6,7 @@ import LabeledContainer from "../LabeledContainer";
 
 const Education = () => {
 
-  const { control, errors, watch } = useFormContext();
+  const { control, errors, watch, trigger } = useFormContext();
   const qualifications = [
     "SSC",
     "HSC",
@@ -17,7 +17,7 @@ const Education = () => {
   return (
     <>
       {qualifications.map((qualification, index) => {
-        return <EducationFields key={index} qualification={qualification} control={control} errors={errors} watch={watch} />
+        return <EducationFields key={index} qualification={qualification} control={control} errors={errors} watch={watch} trigger={trigger} />
       })}
     </>
   );
@@ -25,7 +25,7 @@ const Education = () => {
 
 export default Education;
 
-const EducationFields = ({ qualification, control, watch }) => {
+const EducationFields = ({ qualification, control, watch, trigger }) => {
   const startDateValue = new Date(watch(`education.${qualification}.startDate`));
   return (
     <LabeledContainer label={qualification} sx={{ mt: 5 }}>
@@ -56,6 +56,11 @@ const EducationFields = ({ qualification, control, watch }) => {
           render={({ field, fieldState: { error } }) => <DatePicker
             format="dd-MM-yyyy"
             disableFuture
+            onChange={(date) => {
+              field.onChange(date);
+              trigger(`education.${qualification}.startDate`);
+            }}
+            onBlur={() => trigger(`education.${qualification}.startDate`)}
             minDate={new Date(1980, 0, 1)}
             {...field}
             sx={{ width: '48%' }}
@@ -75,6 +80,11 @@ const EducationFields = ({ qualification, control, watch }) => {
           render={({ field, fieldState: { error } }) => <DatePicker
             format="dd-MM-yyyy"
             disableFuture
+            onChange={(date) => {
+              field.onChange(date);
+              trigger(`education.${qualification}.endDate`);
+            }}
+            onBlur={() => trigger(`education.${qualification}.endDate`)}
             minDate={startDateValue}
             {...field}
             sx={{ width: '48%' }}

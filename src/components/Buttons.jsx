@@ -1,11 +1,13 @@
 import Button from '@mui/material/Button';
 import { Box, FormHelperText } from '@mui/material';
 import { useState } from 'react';
+import { useFormContext } from "react-hook-form";
 
 export default function Buttons({ steps, step, setStep, trigger, handleSubmit }) {
 
     const [error, setError] = useState(false);
-
+    const {formState: { errors }} = useFormContext()
+    
     const handleNext = async () => {
 
         const isValid = await trigger(steps[step].stepId);
@@ -15,14 +17,13 @@ export default function Buttons({ steps, step, setStep, trigger, handleSubmit })
             return;
         }
 
-        setError(false)
-        setStep(prev =>
+        setStep(prev => 
             prev < steps.length - 1 ? prev + 1 : prev
         );
+        setError(false)
     };
 
     const handleFormSubmit = async (data) => {
-        console.log("+++++++++++++++++++++++++++++++++++");
         const isValid = await trigger();
 
         if (!isValid) {
