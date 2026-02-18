@@ -6,18 +6,18 @@ import LabeledContainer from "../LabeledContainer";
 
 const Education = () => {
 
-  const { control, errors } = useFormContext();
+  const { control, errors, watch } = useFormContext();
   const qualifications = [
-      "SSC",
-      "HSC",
-      "Bachelors Degree",
-      "Masters Degree"
-    ];
+    "SSC",
+    "HSC",
+    "Bachelors Degree",
+    "Masters Degree"
+  ];
 
   return (
     <>
       {qualifications.map((qualification, index) => {
-        return <EducationFields key={index} qualification={qualification} control={control} errors={errors} />
+        return <EducationFields key={index} qualification={qualification} control={control} errors={errors} watch={watch} />
       })}
     </>
   );
@@ -25,14 +25,15 @@ const Education = () => {
 
 export default Education;
 
-const EducationFields = ({ qualification, control }) => {
+const EducationFields = ({ qualification, control, watch }) => {
+  const startDateValue = new Date(watch(`education.${qualification}.startDate`));
   return (
-    <LabeledContainer label={qualification} sx={{mt: 5}}>
+    <LabeledContainer label={qualification} sx={{ mt: 5 }}>
 
       <Controller
-        name={`qualifications.${qualification}.instituteName`}
+        name={`education.${qualification}.instituteName`}
         control={control}
-        render={({ field, fieldState : {error} }) => <TextField
+        render={({ field, fieldState: { error } }) => <TextField
           {...field}
           fullWidth
           error={!!error}
@@ -50,9 +51,12 @@ const EducationFields = ({ qualification, control }) => {
         }}
       >
         <Controller
-          name={`qualifications.${qualification}.startDate`}
+          name={`education.${qualification}.startDate`}
           control={control}
-          render={({ field, fieldState: {error} }) => <DatePicker
+          render={({ field, fieldState: { error } }) => <DatePicker
+            format="dd-MM-yyyy"
+            disableFuture
+            minDate={new Date(1980, 0, 1)}
             {...field}
             sx={{ width: '48%' }}
             slotProps={{
@@ -66,9 +70,12 @@ const EducationFields = ({ qualification, control }) => {
         />
 
         <Controller
-          name={`qualifications.${qualification}.endDate`}
+          name={`education.${qualification}.endDate`}
           control={control}
-          render={({ field, fieldState: {error} }) => <DatePicker
+          render={({ field, fieldState: { error } }) => <DatePicker
+            format="dd-MM-yyyy"
+            disableFuture
+            minDate={startDateValue}
             {...field}
             sx={{ width: '48%' }}
             slotProps={{
@@ -83,9 +90,9 @@ const EducationFields = ({ qualification, control }) => {
       </Box>
 
       <Controller
-        name={`qualifications.${qualification}.specialization`}
+        name={`education.${qualification}.specialization`}
         control={control}
-        render={({ field, fieldState : {error} }) => <TextField
+        render={({ field, fieldState: { error } }) => <TextField
           {...field}
           fullWidth
           error={error}
@@ -96,17 +103,17 @@ const EducationFields = ({ qualification, control }) => {
       />
 
       <Controller
-        name={`qualifications.${qualification}.percentage`}
+        name={`education.${qualification}.percentage`}
         control={control}
-        render={({ field, fieldState : {error} }) => <TextField
+        render={({ field, fieldState: { error } }) => <TextField
           {...field}
           fullWidth
           error={error}
           helperText={error?.message}
           label="Percentage"
-          variant="outlined"  
+          variant="outlined"
           type="number"
-          // helperText={ error?.message ? er :"* If result is in CGPA than convert that into percentage according to your institute"}
+        // helperText={ error?.message ? er :"* If result is in CGPA than convert that into percentage according to your institute"}
         />}
       />
     </LabeledContainer>

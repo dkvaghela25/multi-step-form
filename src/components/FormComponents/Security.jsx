@@ -11,19 +11,19 @@ const Security = () => {
     <>
 
       <Controller
-        name="password"
+        name="security.password"
         control={control}
         render={({ field, fieldState: { error } }) => <PasswordField label='Password' error={error} field={field} />}
       />
 
       <Controller
-        name="confirmPassword"
+        name="security.confirmPassword"
         control={control}
         render={({ field, fieldState: { error } }) => <PasswordField label='Confirm Password' field={field} error={error} />}
       />
 
       <Controller
-        name="twoFactorAuthorization"
+        name="security.twoFactorAuthorization"
         control={control}
         render={({ field }) => (
           <FormControlLabel

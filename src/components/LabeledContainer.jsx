@@ -1,6 +1,8 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 
 const LabeledContainer = ({label ,children}) => {
+    const theme = useTheme();
+    console.log(theme);
     return (
         <>
             <Box
@@ -20,7 +22,7 @@ const LabeledContainer = ({label ,children}) => {
                         position: "absolute",
                         top: -10,
                         left: 20,
-                        backgroundColor: "white",
+                        backgroundColor: 'background.paper',
                         px: 1,
                         fontSize: 14,
                     }}

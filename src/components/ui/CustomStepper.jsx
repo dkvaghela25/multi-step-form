@@ -112,7 +112,9 @@ ColorStepIcon.propTypes = {
 };
 
 
+
 export default function CustomStepper({ steps, step, setStep }) {
+
   return (
     <Stepper
       sx={{
@@ -120,9 +122,9 @@ export default function CustomStepper({ steps, step, setStep }) {
       }}
       alternativeLabel activeStep={step} connector={<ColorConnector />}
     >
-      {steps.map((label) => (
-        <Step  key={label} >
-          <StepLabel sx={{cursor: "pointer"}} onClick={() => setStep(steps.indexOf(label))} StepIconComponent={ColorStepIcon}>{label}</StepLabel>
+      {steps.map((step, index) => (
+        <Step key={step.stepId} >
+          <StepLabel sx={{ cursor: "pointer" }} onClick={() => setStep(index)} StepIconComponent={ColorStepIcon}>{step.label}</StepLabel>
         </Step>
       ))}
     </Stepper>

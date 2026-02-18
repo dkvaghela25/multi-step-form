@@ -2,7 +2,7 @@ import { useState } from "react";
 import MultiStepForm from "./components/MultiStepForm";
 import '@fontsource-variable/merriweather';
 import { Box, createTheme, CssBaseline, ThemeProvider, Typography } from "@mui/material";
-import ThemeSwitch from "./components/ThemeSwitch";
+import ThemeSwitch from "./components/ui/ThemeSwitch";
 
 const App = () => {
 
@@ -31,7 +31,8 @@ const App = () => {
             justifyContent: 'center',
             gap: '50px',
             alignItems: 'center',
-            minHeight: '100vh'
+            minHeight: '100vh',
+            my: 5,
           }}
         >
           <Typography variant="h4" gutterBottom>

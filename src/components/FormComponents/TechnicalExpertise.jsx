@@ -13,14 +13,14 @@ const TechnicalExpertise = () => {
     <>
 
       <Controller
-        name="skills"
+        name="technicalExpertise.skills"
         control={control}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <Autocomplete 
+          <Autocomplete
             multiple
             filterSelectedOptions
             options={skillsOptions}
-            // value={Array.isArray(value) ? value : []}
+            value={value}
             onChange={(event, newValue) => {
               onChange(newValue);
               trigger('skills');
@@ -44,7 +44,7 @@ const TechnicalExpertise = () => {
 
       <LabeledContainer label="Experience Level">
         <Controller
-          name="experienceLevel"
+          name="technicalExpertise.experienceLevel"
           control={control}
           render={({ field, fieldState: { error } }) => (
             <FormControl error={!!error}>
@@ -53,14 +53,14 @@ const TechnicalExpertise = () => {
                 <FormControlLabel value="intermediate" control={<Radio />} label="Intermediate" />
                 <FormControlLabel value="advanced" control={<Radio />} label="Advanced" />
               </RadioGroup>
-              {error && <Typography sx={{color: 'error.main', fontSize: '0.75rem', mt: 0.5}}>{error.message}</Typography>}
+              {error && <Typography sx={{ color: 'error.main', fontSize: '0.75rem', mt: 0.5 }}>{error.message}</Typography>}
             </FormControl>
           )}
         />
       </LabeledContainer>
 
       <Controller
-        name={`experience`}
+        name={`technicalExpertise.experience`}
         control={control}
         render={({ field, fieldState: { error } }) => <TextField
           {...field}
@@ -74,7 +74,7 @@ const TechnicalExpertise = () => {
       />
 
       <Controller
-        name={`githubUrl`}
+        name={`technicalExpertise.githubUrl`}
         control={control}
         render={({ field, fieldState: { error } }) => <TextField
           {...field}
@@ -87,7 +87,7 @@ const TechnicalExpertise = () => {
       />
 
       <Controller
-        name={`portfolio`}
+        name={`technicalExpertise.portfolio`}
         control={control}
         render={({ field, fieldState: { error } }) => <TextField
           {...field}
