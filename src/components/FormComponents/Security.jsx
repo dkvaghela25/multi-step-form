@@ -52,7 +52,7 @@ const PasswordField = ({ field, label, error }) => {
   return (
     <>
       <FormControl fullWidth variant="outlined">
-        <InputLabel sx={error ? { color: 'error.main' } : {}}>{label}</InputLabel>
+        <InputLabel error={error}>{label}</InputLabel>
         <OutlinedInput
         sx={error ? { color: 'error.main' } : {}}
           {...field}

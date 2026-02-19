@@ -15,6 +15,18 @@ const App = () => {
     palette: {
       mode: lightMode ? 'light' : 'dark',
     },
+    components: {
+      MuiFormLabel: {
+        styleOverrides: {
+          asterisk: {
+            color: '#db3131', // The desired color
+            '&$error': {
+              color: '#db3131', // Ensure it stays the same color even with an error
+            },
+          },
+        },
+      },
+    }
   });
 
   return (

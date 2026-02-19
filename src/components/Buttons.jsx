@@ -3,10 +3,10 @@ import { Box, FormHelperText } from '@mui/material';
 import { useState } from 'react';
 import { useFormContext } from "react-hook-form";
 
-export default function Buttons({ steps, step, setStep, trigger, handleSubmit }) {
+export default function Buttons({ steps, step, setStep, handleSubmit }) {
 
     const [error, setError] = useState(false);
-    const {formState: { errors }} = useFormContext()
+    const {trigger, formState: { errors }} = useFormContext()
     
     const handleNext = async () => {
 

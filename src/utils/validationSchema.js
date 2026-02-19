@@ -26,63 +26,137 @@ export const schema = yup
                 .max(new Date(), "Date Of Birth cannot be in the future"),
         }),
         education: yup.object({
-            "SSC": yup.object({
-                instituteName: yup.string()
-                    .required("Institute Name is required field")
-                    .min(2, "Institute Name must be at least 2 characters"),
-                startDate: yup.date()
-                    .nullable()
-                    .required("Start Date is required")
-                    .typeError("Start Date must be a valid date"),
-                endDate: yup.date()
-                    .nullable()
-                    .required("End Date is required")
-                    .typeError("End Date must be a valid date"),
-                percentage: yup.number()
-                    .required("Percentage is required field")
-                    .typeError("Percentage must be a number")
-                    .min(0, "Percentage cannot be less than 0")
-                    .max(100, "Percentage cannot exceed 100"),
-                specialization: yup.string()
+            "qualifications": yup.array()
+                .of(yup.string())
+                .required("SSC Qualification is required")
+                .test(
+                    "ssc-required",
+                    "SSC qualification is required",
+                    (value) => value?.includes("SSC")
+                )
+                .test(
+                    "hsc-required",
+                    "HSC qualification is required",
+                    (value) => value?.includes("HSC")
+                )
+                .test(
+                    "bachelors-degree-required",
+                    "Bachelor's Degree qualification is required",
+                    (value) => value?.includes("Bachelors Degree")
+                ),
+
+            "SSC": yup.object().when("qualifications", {
+                is: (qualifications) => qualifications?.includes("SSC"),
+                then: (schema) =>
+                    schema.shape({
+                        instituteName: yup.string()
+                            .required("Institute Name is required field")
+                            .min(2, "Institute Name must be at least 2 characters"),
+
+                        startDate: yup.date()
+                            .nullable()
+                            .required("Start Date is required")
+                            .typeError("Start Date must be a valid date")
+                            .max(new Date(), "Start Date cannot be in the future"),
+                            
+                            endDate: yup.date()
+                            .nullable()
+                            .required("End Date is required")
+                            .typeError("End Date must be a valid date")
+                            .max(new Date(), "SSC must be completed"),
+
+                        percentage: yup.number()
+                            .required("Percentage is required field")
+                            .typeError("Percentage must be a number")
+                            .min(0)
+                            .max(100),
+                    }),
             }),
-            "HSC": yup.object({
-                instituteName: yup.string()
-                    .required("Institute Name is required field")
-                    .min(2, "Institute Name must be at least 2 characters"),
-                startDate: yup.date()
-                    .nullable()
-                    .required("Start Date is required")
-                    .typeError("Start Date must be a valid date"),
-                endDate: yup.date()
-                    .nullable()
-                    .required("End Date is required")
-                    .typeError("End Date must be a valid date"),
-                percentage: yup.number()
-                    .required("Percentage is required field")
-                    .typeError("Percentage must be a number")
-                    .min(0, "Percentage cannot be less than 0")
-                    .max(100, "Percentage cannot exceed 100"),
-                specialization: yup.string()
+            "HSC": yup.object().when("qualifications", {
+                is: (qualifications) => qualifications?.includes("HSC"),
+                then: (schema) =>
+                    schema.shape({
+                        instituteName: yup.string()
+                            .required("Institute Name is required field")
+                            .min(2, "Institute Name must be at least 2 characters"),
+
+                        startDate: yup.date()
+                            .nullable()
+                            .required("Start Date is required")
+                            .typeError("Start Date must be a valid date")
+                            .max(new Date(), "Start Date cannot be in the future"),
+
+                        endDate: yup.date()
+                            .nullable()
+                            .required("End Date is required")
+                            .typeError("End Date must be a valid date")
+                            .max(new Date(), "HSC must be completed"),
+
+                        percentage: yup.number()
+                            .required("Percentage is required field")
+                            .typeError("Percentage must be a number")
+                            .min(0)
+                            .max(100),
+                    }),
             }),
-            "Bachelors Degree": yup.object({
-                instituteName: yup.string()
-                    .required("Institute Name is required field")
-                    .min(2, "Institute Name must be at least 2 characters"),
-                startDate: yup.date()
-                    .nullable()
-                    .required("Start Date is required")
-                    .typeError("Start Date must be a valid date"),
-                endDate: yup.date()
-                    .nullable()
-                    .required("End Date is required")
-                    .typeError("End Date must be a valid date"),
-                percentage: yup.number()
-                    .required("Percentage is required field")
-                    .typeError("Percentage must be a number")
-                    .min(0, "Percentage cannot be less than 0")
-                    .max(100, "Percentage cannot exceed 100"),
-                specialization: yup.string()
-            })
+            "Bachelors Degree": yup.object().when("qualifications", {
+                is: (qualifications) => qualifications?.includes("Bachelors Degree"),
+                then: (schema) =>
+                    schema.shape({
+                        instituteName: yup.string()
+                            .required("Institute Name is required field")
+                            .min(2, "Institute Name must be at least 2 characters"),
+
+                        startDate: yup.date()
+                            .nullable()
+                            .required("Start Date is required")
+                            .typeError("Start Date must be a valid date")
+                            .max(new Date(), "Start Date cannot be in the future"),
+
+                        endDate: yup.date()
+                            .nullable()
+                            .required("End Date is required")
+                            .typeError("End Date must be a valid date"),
+
+                        percentage: yup.number()
+                            .required("Percentage is required field")
+                            .typeError("Percentage must be a number")
+                            .min(0)
+                            .max(100),
+
+                        specialization: yup.string()
+                            .required("specialization is required field")
+                    }),
+            }),
+            "Masters Degree": yup.object().when("qualifications", {
+                is: (qualifications) => qualifications?.includes("Masters Degree"),
+                then: (schema) =>
+                    schema.shape({
+                        instituteName: yup.string()
+                            .required("Institute Name is required field")
+                            .min(2, "Institute Name must be at least 2 characters"),
+
+                        startDate: yup.date()
+                            .nullable()
+                            .required("Start Date is required")
+                            .typeError("Start Date must be a valid date")
+                            .max(new Date(), "Start Date cannot be in the future"),
+
+                        endDate: yup.date()
+                            .nullable()
+                            .required("End Date is required")
+                            .typeError("End Date must be a valid date"),
+
+                        percentage: yup.number()
+                            .required("Percentage is required field")
+                            .typeError("Percentage must be a number")
+                            .min(0)
+                            .max(100),
+
+                        specialization: yup.string()
+                            .required("specialization is required field")
+                    }),
+            }),
         }),
         technicalExpertise: yup.object({
             skills: yup.array()

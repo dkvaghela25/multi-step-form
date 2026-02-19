@@ -7,7 +7,9 @@ import skillsOptions from '../../api/skills.json'
 
 const TechnicalExpertise = () => {
 
-  const { control, trigger } = useFormContext();
+  const { control, trigger, getValues, formState : {errors} } = useFormContext();
+   console.log(getValues());
+   console.log(errors);
 
   return (
     <>

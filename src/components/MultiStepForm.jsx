@@ -27,7 +27,7 @@ const MultiStepForm = () => {
 
     const methods = useForm({
         resolver: yupResolver(schema),
-        mode: "onTouched",
+        mode: "all",
         defaultValues: {
             basicInfo: {
                 fullName: "",
@@ -39,10 +39,11 @@ const MultiStepForm = () => {
                 profilePicture: ""
             },
             education: {
-                "SSC": { qualification: "SSC", instituteName: "", startDate: null, endDate: null, percentage: 0, specialization: "" },
-                "HSC": { qualification: "HSC", instituteName: "", startDate: null, endDate: null, percentage: 0, specialization: "" },
-                "Bachelors Degree": { qualification: "Bachelor's Degree", instituteName: "", startDate: null, endDate: null, percentage: 0, specialization: "" },
-                "Masters Degree": { qualification: "Master's Degree", instituteName: "", startDate: null, endDate: null, percentage: 0, specialization: "" },
+                qualifications: [],
+                "SSC": { qualification: "SSC", instituteName: "", startDate: null, endDate: null, percentage: "", specialization: "" },
+                "HSC": { qualification: "HSC", instituteName: "", startDate: null, endDate: null, percentage: "", specialization: "" },
+                "Bachelors Degree": { qualification: "Bachelor's Degree", instituteName: "", startDate: null, endDate: null, percentage: "", specialization: "" },
+                "Masters Degree": { qualification: "Master's Degree", instituteName: "", startDate: null, endDate: null, percentage: "", specialization: "" },
             },
             technicalExpertise: {
                 skills: [],
@@ -56,8 +57,8 @@ const MultiStepForm = () => {
                 confirmPassword: "",
                 twoFactorAuthorization: false,
             },
-            review : {
-                agreement : false ,
+            review: {
+                agreement: false,
             }
         },
     })
@@ -87,7 +88,7 @@ const MultiStepForm = () => {
             }}
         >
             <FormProvider {...methods}>
-            <CustomStepper steps={steps} step={step} setStep={setStep} />
+                <CustomStepper steps={steps} step={step} setStep={setStep} />
                 <form action="" style={{ width: '50vw' }} autoComplete="off">
                     <Box
                         sx={{
@@ -101,7 +102,7 @@ const MultiStepForm = () => {
                     </Box>
                     <DevTool control={methods.control} />
                 </form>
-            <Buttons steps={steps} step={step} setStep={setStep} trigger={methods.trigger} handleSubmit={methods.handleSubmit}/>
+                <Buttons steps={steps} step={step} setStep={setStep} trigger={methods.trigger} handleSubmit={methods.handleSubmit} />
             </FormProvider>
         </Paper>
     );

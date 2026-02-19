@@ -9,6 +9,7 @@ const Review = () => {
   const { control, getValues } = useFormContext();
 
   const formData = getValues();
+  console.log(formData);
 
   // const formData = {
   //   "basicInfo": {
@@ -95,6 +96,7 @@ const Review = () => {
       <Paper elevation={20} sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: '12px' }}>
         <Typography variant="h4" color="primary">Education</Typography>
         {Object.keys(formData.education).map(key => {
+          if(key === 'qualifications') return <></>
           return (
             <>
               <Divider sx={{ my: 2 }} />

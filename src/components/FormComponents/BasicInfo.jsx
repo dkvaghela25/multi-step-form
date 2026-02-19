@@ -91,11 +91,6 @@ const BasicInfo = () => {
           control={control}
           render={({ field, fieldState: { error } }) => <DatePicker
             {...field}
-            onChange={(date) => {
-              field.onChange(date);
-              trigger('basicInfo.dob');
-            }}
-            onBlur={() => trigger('basicInfo.dob')}
             format="dd-MM-yyyy"
             disableFuture
             minDate={new Date(1980, 0, 1)}
