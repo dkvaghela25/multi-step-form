@@ -90,6 +90,15 @@ const Review = () => {
         <FieldValue label="Phone No" value={formData?.basicInfo?.phoneNo} />
         <FieldValue label="Date Of Birth" value={formData?.basicInfo?.dob?.toLocaleDateString()} />
         <FieldValue label="Age" value={formData?.basicInfo?.age} />
+        
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {(formData?.basicInfo?.profilePicture) ? <CheckCircleIcon sx={{ color: 'green' }} /> : <CancelIcon sx={{ color: 'red' }} />}
+          <Typography sx={{ color: 'text.primary', fontWeight: 800 }} variant="body2" color="initial">
+            {(formData?.basicInfo?.profilePicture) ?
+              "Profile Picture uploaded successfully" :
+              "Profile Picture isn't uploaded"}
+          </Typography>
+        </Box>
       </Paper>
 
       {/* Education */}
@@ -121,6 +130,15 @@ const Review = () => {
         <FieldValue label="Experience" value={formData?.technicalExpertise?.experience} />
         <FieldValue label="Github Url" value={formData?.technicalExpertise?.githubUrl} />
         <FieldValue label="Portfolio" value={formData?.technicalExpertise?.portfolio} />
+
+         <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {(formData?.technicalExpertise?.resume) ? <CheckCircleIcon sx={{ color: 'green' }} /> : <CancelIcon sx={{ color: 'red' }} />}
+          <Typography sx={{ color: 'text.primary', fontWeight: 800 }} variant="body2" color="initial">
+            {(formData?.technicalExpertise?.resume) ?
+              "Resume uploaded successfully" :
+              "Resume isn't uploaded yet"}
+          </Typography>
+        </Box>
       </Paper>
 
       {/* Security */}

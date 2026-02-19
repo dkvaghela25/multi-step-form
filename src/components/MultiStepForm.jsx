@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import CustomStepper from './ui/CustomStepper';
 import Buttons from './Buttons';
-import { Box, Paper } from '@mui/material';
+import { Box, FormHelperText, Paper } from '@mui/material';
 import { FormProvider, useForm } from "react-hook-form";
 import BasicInfo from './FormComponents/BasicInfo';
 import Education from './FormComponents/Education';
@@ -14,6 +14,8 @@ import ThankYouPage from './FormComponents/ThankYouPage';
 import { DevTool } from '@hookform/devtools';
 
 const MultiStepForm = () => {
+
+    const [error, setError] = useState(false);
 
     const steps = [
         { stepId: "basicInfo", label: "Basic Information" },
@@ -51,6 +53,7 @@ const MultiStepForm = () => {
                 experience: "",
                 portfolio: "",
                 githubUrl: "",
+                resume: ""
             },
             security: {
                 password: "",
@@ -88,7 +91,7 @@ const MultiStepForm = () => {
             }}
         >
             <FormProvider {...methods}>
-                <CustomStepper steps={steps} step={step} setStep={setStep} />
+                <CustomStepper steps={steps} currStep={step} setStep={setStep} setError={setError} />
                 <form action="" style={{ width: '50vw' }} autoComplete="off">
                     <Box
                         sx={{
@@ -102,7 +105,9 @@ const MultiStepForm = () => {
                     </Box>
                     <DevTool control={methods.control} />
                 </form>
-                <Buttons steps={steps} step={step} setStep={setStep} trigger={methods.trigger} handleSubmit={methods.handleSubmit} />
+
+                {error && <FormHelperText sx={{ width: "100%", textAlign: 'left', color: 'red' }}>* Their are some validation errors in this step please fix them before proceeding</FormHelperText>}
+                <Buttons steps={steps} step={step} setStep={setStep} trigger={methods.trigger} handleSubmit={methods.handleSubmit} setError={setError} />
             </FormProvider>
         </Paper>
     );

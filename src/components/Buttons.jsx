@@ -1,11 +1,9 @@
 import Button from '@mui/material/Button';
-import { Box, FormHelperText } from '@mui/material';
-import { useState } from 'react';
+import { Box } from '@mui/material';
 import { useFormContext } from "react-hook-form";
 
-export default function Buttons({ steps, step, setStep, handleSubmit }) {
+export default function Buttons({ steps, step, setStep, handleSubmit, setError }) {
 
-    const [error, setError] = useState(false);
     const {trigger, formState: { errors }} = useFormContext()
     
     const handleNext = async () => {
@@ -46,7 +44,6 @@ export default function Buttons({ steps, step, setStep, handleSubmit }) {
 
     return (
         <>
-            {error && <FormHelperText sx={{ width: "100%", textAlign: 'left', color: 'red' }}>* Their are some validation errors in this step please fix them before proceeding</FormHelperText>}
             <Box sx={{
                 width: '100%',
                 display: 'flex',

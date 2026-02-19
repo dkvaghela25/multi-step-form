@@ -15,6 +15,7 @@ import PreviewIcon from '@mui/icons-material/Preview';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
+import { useFormContext } from 'react-hook-form';
 
 const ColorConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -113,18 +114,34 @@ ColorStepIcon.propTypes = {
 
 
 
-export default function CustomStepper({ steps, step, setStep }) {
+export default function CustomStepper({ steps, currStep, setStep, setError }) {
+
+  const { trigger, formState: { errors } } = useFormContext()
 
   return (
     <Stepper
       sx={{
         width: '50vw'
       }}
-      alternativeLabel activeStep={step} connector={<ColorConnector />}
+      alternativeLabel activeStep={currStep} connector={<ColorConnector />}
     >
       {steps.map((step, index) => (
         <Step key={step.stepId} >
-          <StepLabel sx={{ cursor: "pointer" }} onClick={() => setStep(index)} StepIconComponent={ColorStepIcon}>{step.label}</StepLabel>
+          <StepLabel
+            sx={{ cursor: "pointer" }}
+            onClick={async () => {
+              const isValid = await trigger(steps[currStep].stepId)
+              console.log(isValid);
+              if (!isValid) {
+                setError(true);
+                return;
+              };
+              setStep(index)
+            }}
+            StepIconComponent={ColorStepIcon}
+          >
+            {step.label}
+          </StepLabel>
         </Step>
       ))}
     </Stepper>
